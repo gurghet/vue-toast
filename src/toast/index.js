@@ -1,12 +1,6 @@
 import './style.css'
 import template from './template.html'
 
-const defaultOptions = {
-  theme: 'default', // info warning error success
-  timeLife: 5000,
-  closeBtn: false,
-}
-
 export default {
   template: template,
   props: {
@@ -18,15 +12,18 @@ export default {
       required: true
     },
     destroyed: {
-      twoWay: true,
       type: Boolean,
       required: true
     },
     options: {
       type: Object,
-      coerce(options) {
-        return Object.assign({}, defaultOptions, options)
-      },
+      default () {
+        return {
+          theme: 'default',
+          timeLife: 5000,
+          closeBtn: false,
+        }
+      }
     },
   },
   data() {
@@ -42,7 +39,7 @@ export default {
       return `transform: translateY(${this.options.directionOfJumping}${this.position * 100}%)`
     }
   },
-  ready() {
+  mounted() {
     setTimeout(() => {
       this.isShow = true
     }, 50)
@@ -51,15 +48,15 @@ export default {
       this._startLazyAutoDestroy()
     }
   },
-  detached() {
+  destroyed() {
     clearTimeout(this.timerDestroy)
   },
   methods: {
     // Public
     remove() {
       this._clearTimer()
-      this.destroyed = true
-      this.$remove().$destroy()
+      this.$parent.$emit('destroyed', this.position)
+      this.$el.remove()
 
       return this
     },
@@ -67,7 +64,7 @@ export default {
     _startLazyAutoDestroy() {
       this._clearTimer()
       this.timerDestroy = setTimeout(() => {
-        this.$remove().$destroy()
+        this.$el.remove()
       }, this.options.timeLife)
     },
     _clearTimer() {

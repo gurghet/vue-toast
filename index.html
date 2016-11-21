@@ -5,7 +5,8 @@
   <title>Vue toast</title>
   <link rel="stylesheet" href="/dist/vue-toast.css" charset="utf-8">
 </head>
-<body id='app'>
+<body>
+  <div id="app">
   <h3>Options of component.</h3>
   <br>
   <label>
@@ -38,9 +39,9 @@
   <hr>
 
   <button type="button" name="button" @click="showTime">SHOW TIME</button>
-  <vue-toast v-ref:toast></vue-toast>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.js" charset="utf-8"></script>
+  <vue-toast ref="toast"></vue-toast>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.5/vue.js" charset="utf-8"></script>
   <script src="./dist/vue-toast.js"></script>
   <script>
     new Vue({
@@ -53,9 +54,11 @@
         closeBtn: true,
       },
       watch: {
-        'delayOfJumps + maxToasts + position': 'resetOptions'
+        delayOfJumps: this.resetOptions,
+        maxToasts: this.resetOptions,
+        position: this.resetOptions
       },
-      attached() {
+      mounted() {
         this.resetOptions()
       },
       methods: {

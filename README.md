@@ -19,11 +19,11 @@ import VueToast from 'vue-toast'
 
 
 new Vue({
-  template: '<div> <vue-toast v-ref:toast></vue-toast> </div>',
+  template: '<div> <vue-toast ref="toast"></vue-toast> </div>',
   components: {
     VueToast: VueToast
   },
-  ready() {
+  mounted() {
     const toast = this.$refs.toast
     
     toast.showToast('Show me toast')

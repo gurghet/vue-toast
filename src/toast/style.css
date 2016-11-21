@@ -40,7 +40,7 @@
 }
 
 .vue-toast_container.v-enter,
-.vue-toast_container.v-leave {
+.vue-toast_container.v-leave-active {
   opacity: 0;
 }
 

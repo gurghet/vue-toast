@@ -81,6 +81,12 @@ export default {
       return position.match(/top/i) ? '+' : '-'
     }
   },
+  created () {
+    this.$on('destroyed', position => {
+      console.log('received destroyed for', position)
+      this.toasts[position].isDestroyed = true
+    })
+  },
   components: {
     'vue-toast': vueToast
   }
